@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">GiftOrganizer</string>
+    <string name="nav_schedule">schedule</string>
+    <string name="nav_scheduler">Schedule</string>
+    <string name="nav_gift_list">Gift List</string>
+    <string name="nav_shop">Shop</string>
+    <string name="nav_upcoming">Upcoming</string>
+    <string name="nav_sched">Schedule</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
