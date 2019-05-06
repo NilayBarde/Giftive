@@ -17,9 +17,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
-public class MainActivity extends AppCompatActivity {
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-    private FloatingActionButton addPerson;
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView mMainNav;
     private FrameLayout mMainFrame;
@@ -28,11 +34,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     private FragmentSchedule scheduleFragment;
-    private FragmentGiftList giftListFragment;
+    public FragmentGiftList giftListFragment;
     private FragmentShop shopFragment;
 
     private ViewPager viewPager;
     private MenuItem prevMenuItem;
+
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +57,10 @@ public class MainActivity extends AppCompatActivity {
         shopFragment = new FragmentShop();
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
+
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+
+
 
         floatingActionButton.setOnClickListener(    new View.OnClickListener() {
             @Override
@@ -133,7 +145,8 @@ public class MainActivity extends AppCompatActivity {
 
         setupViewPager(viewPager);
 
-    }
+            }
+
 
     private void setFragment(Fragment fragment) {
 

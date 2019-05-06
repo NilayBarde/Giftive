@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "324280548991",
+    "firebase_url": "https://giftorganizer-5823a.firebaseio.com",
+    "project_id": "giftorganizer-5823a",
+    "storage_bucket": "giftorganizer-5823a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:324280548991:android:c4246fbb8b0f41fd",
+        "android_client_info": {
+          "package_name": "com.example.nilay.giftorganizer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "324280548991-7gjt7dcsas62rp3jq3lt5ualv63ubvcv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.nilay.giftorganizer",
+            "certificate_hash": "83b30e8586581de8c4c70ef2f491d3620ea71dae"
+          }
+        },
+        {
+          "client_id": "324280548991-odu8vl4frgb30mgammlv42e6oatcom13.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmoLKvGdT6eLDay9BWAbZecjTVnZ0lBD4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "324280548991-odu8vl4frgb30mgammlv42e6oatcom13.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
