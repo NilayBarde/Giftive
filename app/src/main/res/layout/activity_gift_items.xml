@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GiftItems">
+
+
+        <ListView
+            android:id="@+id/giftlistview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/instructionsGifts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="There are no gifts in your list for this person yet!\n\n Add a person using the button below!" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabGift"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_add_black_24dp"
+            android:tint="@color/colorWhite"
+            app:backgroundTint="@color/colorPrimary"
+            app:elevation="6dp"
+            app:fabSize="normal">
+
+        </android.support.design.widget.FloatingActionButton>
+
+</android.support.design.widget.CoordinatorLayout>

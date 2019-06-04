@@ -1,29 +1,34 @@
 package com.example.nilay.giftorganizer;
 
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.annotation.NonNull;
-import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.example.nilay.giftorganizer.AccountActivity.LoginActivity;
+import com.example.nilay.giftorganizer.CustomAdapters.ViewPagerAdapter;
+import com.example.nilay.giftorganizer.Fragments.FragmentGiftList;
+import com.example.nilay.giftorganizer.Fragments.FragmentSchedule;
+import com.example.nilay.giftorganizer.Fragments.FragmentShop;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton floatingActionButton;
 
-
     private FragmentSchedule scheduleFragment;
     public FragmentGiftList giftListFragment;
     private FragmentShop shopFragment;
@@ -40,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private MenuItem prevMenuItem;
 
-    private DatabaseReference databaseReference;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,17 +53,14 @@ public class MainActivity extends AppCompatActivity {
 
         mMainFrame = (FrameLayout) findViewById(R.id.mainFrame);
         mMainNav = (BottomNavigationView) findViewById(R.id.mainNav);
-
         floatingActionButton = findViewById(R.id.fab_1);
-
         scheduleFragment = new FragmentSchedule();
         giftListFragment = new FragmentGiftList();
         shopFragment = new FragmentShop();
-
+        firebaseAuth = FirebaseAuth.getInstance();
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-
+        getSupportActionBar().setTitle("Home");
 
 
         floatingActionButton.setOnClickListener(    new View.OnClickListener() {
@@ -69,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
 
         mMainNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -143,10 +143,44 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.package.ACTION_LOGOUT");
+        registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                finish();
+            }
+        }, intentFilter);
+
         setupViewPager(viewPager);
 
-            }
+    }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.nav_sections, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.signout:
+                Toast.makeText(this, "Signed Out", Toast.LENGTH_SHORT).show();
+                Intent broadcastIntent = new Intent();
+                broadcastIntent.setAction("com.package.ACTION_LOGOUT");
+                sendBroadcast(broadcastIntent);
+                finish();
+                firebaseAuth.signOut();
+                startActivity(new Intent(this, LoginActivity.class));
+        }
+
+        return true;
+    }
 
     private void setFragment(Fragment fragment) {
 

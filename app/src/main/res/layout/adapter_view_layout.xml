@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="100"
+    android:descendantFocusability="blocksDescendants">
+
+    <CheckBox
+        android:id="@+id/bought"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_weight="60"
+        android:gravity="center"
+        android:text="TextView1"
+        android:textAlignment="center"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="40">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_weight="60"
+            android:gravity="center"
+            android:text="TextView1"
+            android:textAlignment="center"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+</LinearLayout>

@@ -1,4 +1,4 @@
-package com.example.nilay.giftorganizer;
+package com.example.nilay.giftorganizer.CustomAdapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

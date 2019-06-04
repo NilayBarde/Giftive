@@ -1,9 +1,16 @@
-<LinearLayout xmlns:android ="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android ="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
     android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -26,16 +33,46 @@
             android:id="@+id/budget"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Your Budget"
-            android:inputType="number" />
+            android:hint="Your Budget (Optional)"
+            android:inputType="numberDecimal" />
     </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:id="@+id/occasion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Occasion"/>
+        </android.support.design.widget.TextInputLayout>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:id="@+id/eventDate"
+                android:hint="Date of Event" />
+
+        <CheckBox
+            android:id="@+id/reoccurringEvent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reoccurring Event?"/>
 
     <Button
         android:id="@+id/addBttn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:backgroundTint="@color/colorPrimary"
         android:textColor="@color/colorWhite"
         android:text="Add" />
+    </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

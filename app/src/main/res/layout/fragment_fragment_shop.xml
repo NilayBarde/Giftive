@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentShop">
+    tools:context=".Fragments.FragmentShop">
 
-    <!-- TODO: Update blank fragment layout -->
+    <ExpandableListView
+        android:id="@+id/lvExp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ExpandableListView>
     <TextView
+        android:id="@+id/instructions"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="FragmentShop" />
-
-</FrameLayout>
+        android:gravity="center"
+        android:text="There are no gifts in your list yet!\n\n Add a gift by tapping on a person's name in Gift List!" />
+</RelativeLayout>

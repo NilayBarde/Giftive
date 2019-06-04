@@ -1,4 +1,4 @@
-package com.example.nilay.giftorganizer;
+package com.example.nilay.giftorganizer.CustomAdapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,8 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.nilay.giftorganizer.Objects.Person;
+import com.example.nilay.giftorganizer.R;
+
+import java.text.DecimalFormat;
+import java.text.Format;
 import java.util.ArrayList;
-import java.util.List;
 
 public class PersonBudgetListViewAdapter extends ArrayAdapter<Person> {
 
@@ -26,13 +30,16 @@ public class PersonBudgetListViewAdapter extends ArrayAdapter<Person> {
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
+        DecimalFormat df = new DecimalFormat("#0.00");
         String name = getItem(position).getName();
         Double budget = getItem(position).getBudget();
+        Double bought = getItem(position).getBought();
 
         Person person = new Person();
         person.setName(name);
         person.setBudget(budget);
+        person.setBought(bought);
+
 
         if(LayoutInflater.from(mContext) != null) {
             LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -42,7 +49,7 @@ public class PersonBudgetListViewAdapter extends ArrayAdapter<Person> {
             TextView tvBudget = (TextView) convertView.findViewById(R.id.textView2);
 
             tvName.setText(name);
-            tvBudget.setText("0/" + budget.toString());
+            tvBudget.setText("$" + df.format(bought) + " / $" + df.format(budget));
         }
 
         return convertView;
