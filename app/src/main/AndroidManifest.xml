@@ -3,11 +3,12 @@
     package="com.example.nilay.giftorganizer">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:icon="@drawable/icon2"
+        android:label="Giftive"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -19,7 +20,6 @@
         <activity android:name=".AccountActivity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -27,6 +27,11 @@
         <activity
             android:name=".addPersonActivity"
             android:parentActivityName=".MainActivity" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-1058895947598410~8563879014"/>
     </application>
 
 </manifest>
+    <!--android:value="ca-app-pub-1058895947598410~8563879014"-->
+

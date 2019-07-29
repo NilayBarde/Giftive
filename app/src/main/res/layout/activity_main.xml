@@ -7,7 +7,7 @@
     android:fitsSystemWindows="false"
     tools:context=".MainActivity">
 
-    <android.support.design.widget.BottomNavigationView
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/mainNav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,15 +23,15 @@
         app:itemTextColor="@color/nav_item_colors"
         app:menu="@menu/nav_items">
 
-    </android.support.design.widget.BottomNavigationView>
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/mainNav"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="80dp"
         android:layout_marginEnd="25dp"
         android:src="@drawable/ic_add_black_24dp"
         android:tint="@color/colorWhite"
@@ -39,7 +39,7 @@
         app:elevation="6dp"
         app:fabSize="normal">
 
-    </android.support.design.widget.FloatingActionButton>
+    </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
     <FrameLayout
         android:id="@+id/mainFrame"
@@ -47,12 +47,25 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="0dp">
 
-        <android.support.v4.view.ViewPager
+        <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="0dp" />
     </FrameLayout>
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="60dp"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-1058895947598410/1802975649" >
+        <!--ads:adUnitId="ca-app-pub-1058895947598410/1802975649"-->
+    </com.google.android.gms.ads.AdView>
 
 </RelativeLayout>
 

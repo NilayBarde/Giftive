@@ -1,14 +1,21 @@
 package com.example.nilay.giftorganizer.Objects;
 
-import java.util.Date;
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.ServerValue;
+
+import java.util.HashMap;
 
 public class Gift implements Comparable<Gift> {
     String name;
     Double price;
-    private Date date;
     private boolean bought;
+    private HashMap<String, Object> timestampCreated;
 
     public Gift() {
+        HashMap<String, Object> timestampNow = new HashMap<>();
+        timestampNow.put("timestamp", ServerValue.TIMESTAMP);
+        this.timestampCreated = timestampNow;
+
     }
 
     public String getName() {
@@ -27,12 +34,13 @@ public class Gift implements Comparable<Gift> {
         this.price = price;
     }
 
-    public Date getDate() {
-        return date;
+    @Exclude
+    public long getTimestampCreatedLong(){
+        return (long)timestampCreated.get("timestamp");
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public HashMap<String, Object> getTimestampCreated(){
+        return timestampCreated;
     }
 
     public boolean isBought() {
@@ -44,10 +52,10 @@ public class Gift implements Comparable<Gift> {
     }
 
     public int compareTo(Gift gift) {
-        if(this.getDate().before(gift.getDate())) {
+        if(this.getTimestampCreatedLong() < gift.getTimestampCreatedLong()) {
             return -1;
         }
-        else if(this.getDate().equals(gift.getDate())) {
+        else if(this.getTimestampCreatedLong() == gift.getTimestampCreatedLong()) {
             return 0;
         }
         else {

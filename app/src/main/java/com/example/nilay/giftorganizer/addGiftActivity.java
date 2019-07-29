@@ -1,7 +1,7 @@
 package com.example.nilay.giftorganizer;
 
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -11,26 +11,23 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.nilay.giftorganizer.Objects.Gift;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.Calendar;
 
 public class addGiftActivity extends AppCompatActivity {
+
+    private AdView mAdView;
 
     private Button addBtn;
     private EditText giftName;
     private EditText price;
 
-    private FirebaseDatabase database;
     private DatabaseReference databaseReference;
-    private DatabaseReference databaseReference2;
-    private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
     private String name;
 
@@ -40,16 +37,23 @@ public class addGiftActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_gift);
 
+        // MobileAds.initialize(this, "ca-app-pub-1058895947598410/1802975649");
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544/6300978111");
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("5AF7DA78BC0D4FA32EC0E2C559B83CB8")
+                .build();
+        mAdView.loadAd(adRequest);
+
+
         getSupportActionBar().setTitle("Add a Gift");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Bundle b = getIntent().getExtras();
         name = b.getString("Name", "");
 
-        database = FirebaseDatabase.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        firebaseAuth = FirebaseAuth.getInstance();
-        user = firebaseAuth.getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         addBtn = findViewById(R.id.addBttn);
         giftName = findViewById(R.id.giftName);
@@ -73,7 +77,6 @@ public class addGiftActivity extends AppCompatActivity {
         if(giftName.getText().toString().length() > 0) {
             Gift gift = new Gift();
             gift.setName(giftName.getText().toString());
-            gift.setDate(Calendar.getInstance().getTime());
             gift.setBought(false);
             if(TextUtils.isEmpty(price.getText().toString())) {
                 gift.setPrice(0.00);

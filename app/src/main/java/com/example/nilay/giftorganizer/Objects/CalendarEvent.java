@@ -1,16 +1,16 @@
-package com.example.nilay.giftorganizer;
+package com.example.nilay.giftorganizer.Objects;
 
 public class CalendarEvent {
     private String name;
     private String eventName;
     private String date;
-    private boolean reoccurring;
+//    private boolean reoccurring;
 
     public CalendarEvent() {
         this.name = name;
         this.eventName = eventName;
         this.date = date;
-        this.reoccurring = reoccurring;
+//        this.reoccurring = reoccurring;
     }
 
     public String getName() {
@@ -37,11 +37,11 @@ public class CalendarEvent {
         this.date = date;
     }
 
-    public boolean isReoccurring() {
-        return reoccurring;
-    }
-
-    public void setReoccurring(boolean reoccurring) {
-        this.reoccurring = reoccurring;
-    }
+//    public boolean isReoccurring() {
+//        return reoccurring;
+//    }
+//
+//    public void setReoccurring(boolean reoccurring) {
+//        this.reoccurring = reoccurring;
+//    }
 }

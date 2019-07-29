@@ -2,16 +2,19 @@ package com.example.nilay.giftorganizer;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.nilay.giftorganizer.Objects.Gift;
-import com.example.nilay.giftorganizer.Objects.Person;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -21,6 +24,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class EditGiftActivity extends AppCompatActivity {
+
+    private AdView mAdView;
 
     private EditText nameEditText;
     private EditText priceEditText;
@@ -32,7 +37,6 @@ public class EditGiftActivity extends AppCompatActivity {
     private Gift currGift;
 
     private DatabaseReference databaseReference;
-    private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
     private ProgressDialog progressDialog;
 
@@ -41,6 +45,15 @@ public class EditGiftActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_gift);
+
+        //        MobileAds.initialize(this, "ca-app-pub-1058895947598410/1802975649");
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544/6300978111");
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("5AF7DA78BC0D4FA32EC0E2C559B83CB8")
+                .build();
+        mAdView.loadAd(adRequest);
+
 
         nameEditText = findViewById(R.id.editGiftName);
         priceEditText = findViewById(R.id.editPrice);
@@ -54,26 +67,26 @@ public class EditGiftActivity extends AppCompatActivity {
         priceEditText.setText(price.toString());
 
         currGift = new Gift();
-        progressDialog = new ProgressDialog(this);
 
         getSupportActionBar().setTitle("Edit " + GiftName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        user = firebaseAuth.getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference(user.getUid());
 
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog.setMessage("Updating...");
-                progressDialog.show();
-                updateGiftData();
-                openActivity();
-                progressDialog.dismiss();
+                if(!nameEditText.getText().toString().isEmpty()) {
+                    updateGiftData();
+                    openActivity();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Please enter a gift", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
-
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -87,7 +100,6 @@ public class EditGiftActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
 
@@ -110,6 +122,5 @@ public class EditGiftActivity extends AppCompatActivity {
         intent.putExtras(bundle);
         startActivity(intent);
     }
-
 
 }

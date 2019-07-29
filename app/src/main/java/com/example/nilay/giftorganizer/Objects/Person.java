@@ -1,19 +1,20 @@
 package com.example.nilay.giftorganizer.Objects;
 
-import java.util.Date;
-
 public class Person implements Comparable<Person> {
     private String name;
     private double budget;
-    private String birthday;
+    private String date;
     private double bought;
-    private Date date;
     private String occasion;
-    private boolean reoccurring;
+    private boolean allGiftsBought;
+    private Long timestamp;
 
     public Person() {
         this.bought = 0;
-        this.birthday = "0";
+        this.date = "0";
+        this.allGiftsBought = false;
+        Long tsLong = System.currentTimeMillis()/1000;
+        this.timestamp = tsLong;
 
     }
 
@@ -33,12 +34,12 @@ public class Person implements Comparable<Person> {
         this.budget = budget;
     }
 
-    public String getBirthday() {
-        return birthday;
+    public String getDate() {
+        return date;
     }
 
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public double getBought() {
@@ -49,12 +50,12 @@ public class Person implements Comparable<Person> {
         this.bought = bought;
     }
 
-    public Date getDate() {
-        return date;
+    public Long getTimestamp() {
+        return timestamp;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getOccasion() {
@@ -65,23 +66,23 @@ public class Person implements Comparable<Person> {
         this.occasion = occasion;
     }
 
-    public boolean isReoccurring() {
-        return reoccurring;
+    public boolean isAllGiftsBought() {
+        return allGiftsBought;
     }
 
-    public void setReoccurring(boolean reoccurring) {
-        this.reoccurring = reoccurring;
+    public void setAllGiftsBought(boolean allGiftsBought) {
+        this.allGiftsBought = allGiftsBought;
     }
 
     public int compareTo(Person person) {
-       if(this.getDate().before(person.getDate())) {
-           return -1;
-       }
-       else if(this.getDate().equals(person.getDate())) {
-           return 0;
-       }
-       else {
-           return 1;
-       }
+        if(this.getTimestamp() < person.getTimestamp()) {
+            return -1;
+        }
+        else if(this.getTimestamp() == person.getTimestamp()) {
+            return 0;
+        }
+        else {
+            return 1;
+        }
     }
 }

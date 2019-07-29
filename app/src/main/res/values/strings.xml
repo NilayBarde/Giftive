@@ -4,6 +4,13 @@
     <string name="nav_gift_list">Gift List</string>
     <string name="nav_shop">Shop</string>
     <string name="nav_sched">Schedule</string>
+    <string name="facebook_application_id" translatable="false">1333629326789813</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb1333629326789813</string>
+    <string name="toolbar_title">"Custom title"</string>
+
+
+    <!--<string name="facebook_app_id">1333629326789813</string>-->
+    <!--<string name="fb_login_protocol_scheme">fb1333629326789813</string>-->
 
     <string-array name="eventTypes">
         <item>Select an Event</item>

@@ -12,7 +12,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp">
@@ -21,10 +21,10 @@
                 android:id="@+id/editGiftName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Gift's Name" />
-        </android.support.design.widget.TextInputLayout>
+                android:hint="Gift" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp">
@@ -33,9 +33,9 @@
                 android:id="@+id/editPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Price of Gift"
+                android:hint="Price of Gift (Optional)"
                 android:inputType="numberDecimal" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/updateBttnGift"
@@ -45,5 +45,19 @@
             android:text="Update"
             android:textColor="@color/colorWhite" />
     </LinearLayout>
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-1058895947598410/1802975649" >
+        <!--ads:adUnitId="ca-app-pub-1058895947598410/1802975649"-->
+    </com.google.android.gms.ads.AdView>
+
 
 </RelativeLayout>

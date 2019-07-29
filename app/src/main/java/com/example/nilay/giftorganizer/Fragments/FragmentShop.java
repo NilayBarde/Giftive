@@ -1,21 +1,17 @@
 package com.example.nilay.giftorganizer.Fragments;
 
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.service.autofill.Dataset;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.nilay.giftorganizer.Objects.Gift;
@@ -48,16 +44,16 @@ public class FragmentShop extends Fragment {
     private ExpandableListView listView;
     private ExpandableListAdapter listAdapter;
     private List<String> listDataHeader;
-    private HashMap<String, List<String>> listHash;
+    private HashMap<String, List<Gift>> listHash;
     private TextView instructions;
     private FirebaseUser user;
-    private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
-    private FirebaseDatabase database;
     private ArrayList<String> nameList;
     private ArrayList<Person> personList;
-    private String selectedGift;
     private CheckBox bought;
+    private boolean currBought;
+    private boolean allBought;
+    private boolean [] groupExpandedArray = new boolean[0];
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,10 +61,8 @@ public class FragmentShop extends Fragment {
         final View view =  inflater.inflate(R.layout.fragment_fragment_shop, container, false);
 
         listView = (ExpandableListView) view.findViewById(R.id.lvExp);
-        database = FirebaseDatabase.getInstance();
-        firebaseAuth = FirebaseAuth.getInstance();
-        user = firebaseAuth.getCurrentUser();
-        databaseReference = database.getReference(user.getUid());
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference(user.getUid());
         instructions = view.findViewById(R.id.instructions);
         listDataHeader = new ArrayList<>();
         listHash = new HashMap<>();
@@ -83,7 +77,15 @@ public class FragmentShop extends Fragment {
                 clearData();
                 initData(dataSnapshot);
                 instructionsTextChange();
-                listView.setAdapter(listAdapter);
+                if(listHash.size() > 0) {
+                    listView.setAdapter(listAdapter);
+                }
+                else {
+                    listView.setAdapter((ExpandableListAdapter) null);
+                }
+                if(groupExpandedArray.length != 0) {
+                    saveStates();
+                }
             }
 
             @Override
@@ -95,14 +97,26 @@ public class FragmentShop extends Fragment {
         listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                bought = view.findViewById(R.id.bought);
-                selectedGift = (String) listAdapter.getChild(groupPosition, childPosition);
-                bought.setChecked(true);
+                bought = v.findViewById(R.id.shopBought);
+                Gift g = listHash.get(listDataHeader.get(groupPosition)).get(childPosition);
+                int numberOfGroups = listAdapter.getGroupCount();
+                groupExpandedArray = new boolean[numberOfGroups];
+                for (int i=0;i<numberOfGroups;i++)
+                    groupExpandedArray[i] = listView.isGroupExpanded(i);
+                databaseReference.child("GiftsList").child(listAdapter.getGroup(groupPosition) + " Gifts").child(listAdapter.getChild(groupPosition, childPosition).toString()).child("bought").setValue(!(g.isBought()));
                 return true;
             }
         });
 
         return view;
+    }
+
+    private void saveStates() {
+        if (listHash.size() > 0) {
+            for (int i = 0; i < groupExpandedArray.length; i++)
+                if (groupExpandedArray[i] == true)
+                    listView.expandGroup(i);
+        }
     }
 
     private void clearData() {
@@ -141,15 +155,24 @@ public class FragmentShop extends Fragment {
 
         for(String name : nameList) {
             DataSnapshot dataSnapshot4 = dataSnapshot2.child(name + " Gifts");
-            ArrayList<String> list = new ArrayList<>();
+            ArrayList<Gift> list = new ArrayList<>();
+//            allBought = true;
             for(DataSnapshot ds2 : dataSnapshot4.getChildren()) {
                 Gift gift = ds2.getValue(Gift.class);
-                gift.setBought(false);
-                list.add(gift.getName());
+//                if(!(gift.isBought())) {
+//                    allBought = false;
+//                }
+                list.add(gift);
                 listHash.put(listDataHeader.get(a), list);
             }
+//            if(!dataSnapshot4.exists()) {
+//                allBought = false;
+//            }
             a++;
+//            databaseReference.child("PersonList").child(name).child("allGiftsBought").setValue(allBought);
+
         }
+
     }
 
 }

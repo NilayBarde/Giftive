@@ -15,13 +15,14 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:text="User Registration"
+            android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="16dp"
             android:layout_gravity="center_horizontal"
-            android:id="@+id/textView3" />
+            android:layout_marginBottom="16dp"
+            android:text="User Registration"
+            android:textSize="16dp" />
 
         <EditText
             android:layout_margin="15dp"
@@ -51,11 +52,15 @@
             android:textColor="@color/colorWhite"/>
 
         <TextView
-            android:textAlignment="center"
-            android:text="Already Registered or have a Google Account? Click Here"
             android:id="@+id/textViewSignin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
+            android:paddingTop="5dp"
+            android:paddingRight="4dp"
+            android:text="Already Registered or have a Google Account?\nClick Here"
+            android:textAlignment="center"
+            android:textSize="16dp" />
 
     </LinearLayout>
 

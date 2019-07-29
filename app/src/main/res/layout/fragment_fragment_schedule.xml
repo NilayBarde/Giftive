@@ -8,13 +8,12 @@
 
     <TextView
         android:id="@+id/monthYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
-        android:text="May 2019"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16dp"/>
+        android:textSize="16dp" />
 
     <com.github.sundeepk.compactcalendarview.CompactCalendarView
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -32,9 +31,24 @@
         app:compactCalendarMultiEventIndicatorColor="#ffff00"
         />
 
-    <ListView
-        android:id="@+id/listView"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="wrap_content">
+
+    <ListView
+        android:id="@+id/calendarEventListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        android:layout_marginBottom="120dp"></ListView>
+
+    <TextView
+        android:id="@+id/calendarList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="There are no gifts to be bought for this month!\n\n Add a date to a person to add them to this list!" />
+
+    </RelativeLayout>
 
 </LinearLayout>

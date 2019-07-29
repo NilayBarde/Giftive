@@ -2,20 +2,22 @@ package com.example.nilay.giftorganizer;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.design.widget.TextInputEditText;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.example.nilay.giftorganizer.Objects.CalendarEvent;
 import com.example.nilay.giftorganizer.Objects.Gift;
 import com.example.nilay.giftorganizer.Objects.Person;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -29,11 +31,12 @@ import java.util.Calendar;
 
 public class EditPersonActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
+    private AdView mAdView;
+
     private EditText nameEditText;
     private EditText budgetEditText;
     private EditText birthdayEditText;
     private EditText occasionEditText;
-    private CheckBox reoccurringEvent;
     private Button updateButton;
 
     private String name;
@@ -41,7 +44,6 @@ public class EditPersonActivity extends AppCompatActivity implements DatePickerD
     private String occasion;
 
     private DatabaseReference databaseReference;
-    private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
 
     private Person currPerson;
@@ -54,15 +56,22 @@ public class EditPersonActivity extends AppCompatActivity implements DatePickerD
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_person);
 
+        //        MobileAds.initialize(this, "ca-app-pub-1058895947598410/1802975649");
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544/6300978111");
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("5AF7DA78BC0D4FA32EC0E2C559B83CB8")
+                .build();
+        mAdView.loadAd(adRequest);
+
+
         nameEditText = findViewById(R.id.editPersonName);
         budgetEditText = findViewById(R.id.editBudget);
         birthdayEditText = findViewById(R.id.EditEventDate);
         occasionEditText = findViewById(R.id.editOccasion);
-        reoccurringEvent = findViewById(R.id.reoccurringEvent);
         updateButton = findViewById(R.id.updateBttnPerson);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        user = firebaseAuth.getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference(user.getUid());
 
         currPerson = new Person();
@@ -89,31 +98,45 @@ public class EditPersonActivity extends AppCompatActivity implements DatePickerD
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updatePeopleData();
-                updateEvents();
-                if(!(nameEditText.getText().toString().equals(name))) {
-                    updateGiftListData();
+                if(!nameEditText.getText().toString().isEmpty()) {
+                    if(!occasionEditText.getText().toString().isEmpty()) {
+                        updatePeopleData();
+                        updateEvents();
+                        if(!(nameEditText.getText().toString().equals(name))) {
+                            updateGiftListData();
+                        }
+                        openActivity();
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(), "Please enter an occasion", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
-                openActivity();
+                else {
+                    Toast.makeText(getApplicationContext(), "Please enter a name", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                DataSnapshot ds = dataSnapshot.child("PersonList" + "/" + name + "/");
-                currPerson = ds.getValue(Person.class);
-                if(!(currPerson.getBirthday().equals("0"))) {
-                    birthdayEditText.setText(currPerson.getBirthday());
-                }
-                occasion = currPerson.getOccasion();
-                occasionEditText.setText(currPerson.getOccasion());
-                    reoccurringEvent.setChecked(currPerson.isReoccurring());
-                DataSnapshot dataSnapshot1 = dataSnapshot.child("GiftsList").child(name + " Gifts");
+                if (dataSnapshot.child("PersonList").child(name).exists()) {
+                    DataSnapshot ds = dataSnapshot.child("PersonList").child(name);
+                    currPerson = ds.getValue(Person.class);
+                    if (!(currPerson.getDate().equals("0"))) {
+                        birthdayEditText.setText(currPerson.getDate());
+                    }
+                    occasion = currPerson.getOccasion();
+                    occasionEditText.setText(currPerson.getOccasion());
+//                    reoccurringEvent.setChecked(currPerson.isReoccurring());
+                    DataSnapshot dataSnapshot1 = dataSnapshot.child("GiftsList").child(name + " Gifts");
 
-                for(DataSnapshot ds1 : dataSnapshot1.getChildren()) {
-                    currGift = ds1.getValue(Gift.class);
-                    giftList.add(currGift);
+                    for (DataSnapshot ds1 : dataSnapshot1.getChildren()) {
+                        currGift = ds1.getValue(Gift.class);
+                        giftList.add(currGift);
+                    }
                 }
             }
 
@@ -129,7 +152,6 @@ public class EditPersonActivity extends AppCompatActivity implements DatePickerD
         currEvent.setDate(birthdayEditText.getText().toString());
         currEvent.setEventName(occasionEditText.getText().toString());
         currEvent.setName(nameEditText.getText().toString());
-        currEvent.setReoccurring(reoccurringEvent.isChecked());
         databaseReference.child("EventList").child(name + "'s Event").removeValue();
         databaseReference.child("EventList").child(currEvent.getName() + "'s Event").setValue(currEvent);
 
@@ -141,12 +163,12 @@ public class EditPersonActivity extends AppCompatActivity implements DatePickerD
         currPerson.setBudget(Double.parseDouble(budgetEditText.getText().toString()));
         currPerson.setOccasion(occasionEditText.getText().toString());
         if(birthdayEditText.getText().toString().isEmpty()) {
-            currPerson.setBirthday("0");
+            currPerson.setDate("0");
         }
         else {
-            currPerson.setBirthday(birthdayEditText.getText().toString());
+            currPerson.setDate(birthdayEditText.getText().toString());
         }
-        currPerson.setReoccurring(reoccurringEvent.isChecked());
+
         databaseReference.child("PersonList").child(name).removeValue();
         databaseReference.child("PersonList").child(currPerson.getName()).setValue(currPerson);
 

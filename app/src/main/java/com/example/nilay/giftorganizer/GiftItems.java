@@ -3,11 +3,14 @@ package com.example.nilay.giftorganizer;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,9 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.nilay.giftorganizer.Fragments.FragmentGiftList;
 import com.example.nilay.giftorganizer.Objects.Gift;
 import com.example.nilay.giftorganizer.Objects.Person;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,14 +31,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class GiftItems extends AppCompatActivity {
 
+    private AdView mAdView;
     private DatabaseReference databaseReference;
-    private FirebaseDatabase database;
-    private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseReference2;
     private FirebaseUser user;
     private ArrayList<Gift> giftItems;
     private ArrayAdapter<Gift> adapter;
@@ -56,6 +58,15 @@ public class GiftItems extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gift_items);
 
+        //        MobileAds.initialize(this, "ca-app-pub-1058895947598410/1802975649");
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544/6300978111");
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("5AF7DA78BC0D4FA32EC0E2C559B83CB8")
+                .build();
+        mAdView.loadAd(adRequest);
+
+
         currPerson = new Person();
         currGift = new Gift();
         giftItems = new ArrayList<Gift>();
@@ -66,10 +77,9 @@ public class GiftItems extends AppCompatActivity {
         name = b.getString("Name", "");
         builder = new AlertDialog.Builder(this);
 
-        database = FirebaseDatabase.getInstance();
-        firebaseAuth = FirebaseAuth.getInstance();
-        user = firebaseAuth.getCurrentUser();
-        databaseReference = database.getReference(user.getUid());
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference(user.getUid()).child("GiftsList").child(name + " Gifts");
+        databaseReference2 = FirebaseDatabase.getInstance().getReference(user.getUid()).child("PersonList").child(name).child("bought");
         floatingActionButton = findViewById(R.id.fabGift);
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -79,20 +89,14 @@ public class GiftItems extends AppCompatActivity {
             }
         });
 
-
         adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_2, android.R.id.text1, giftItems) {
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
                 TextView text1 = (TextView) view.findViewById(android.R.id.text1);
                 TextView text2 = (TextView) view.findViewById(android.R.id.text2);
-
+                DecimalFormat df = new DecimalFormat("#0.00");
                 text1.setText(giftItems.get(position).getName());
-                if(giftItems.get(position).getPrice() % 1 == 0) {
-                    text2.setText("$" + giftItems.get(position).getPrice().toString() + "0");
-                }
-                else {
-                    text2.setText("$" + giftItems.get(position).getPrice().toString());
-                }
+                text2.setText("$" + df.format(giftItems.get(position).getPrice()));
                 return view;
             }
         };
@@ -177,42 +181,40 @@ public class GiftItems extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item){
-//        switch (item.getItemId()) {
-//            default:
                 Intent intent1 = new Intent(this, MainActivity.class);
                 startActivity(intent1);
                 return true;
         }
 
     private void showData(DataSnapshot dataSnapshot) {
-        DataSnapshot dataSnapshot2 = dataSnapshot.child("GiftsList" + "/" + name + " Gifts" + "/");
-
-        for(DataSnapshot ds : dataSnapshot2.getChildren()) {
-            currGift = ds.getValue(Gift.class);
-            giftItems.add(currGift);
-        }
-        Collections.sort(giftItems);
-        giftSum = 0;
-        if(!(giftItems.isEmpty())) {
-            for (Gift gift : giftItems) {
-                giftSum = giftSum + gift.getPrice();
+            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                currGift = ds.getValue(Gift.class);
+                giftItems.add(currGift);
             }
-            instructionsGift.setText("");
-        }
+            Collections.sort(giftItems);
+            giftSum = 0;
+            if (!(giftItems.isEmpty())) {
+                for (Gift gift : giftItems) {
+                    giftSum = giftSum + gift.getPrice();
+                }
+                instructionsGift.setText("");
+            }
 
-        DataSnapshot dataSnapshot1 = dataSnapshot.child("PersonList" + "/" + name + "/");
-            currPerson = dataSnapshot1.getValue(Person.class);
-        if(!(currPerson == null)) {
-            currPerson.setBought(giftSum);
-            Log.d("SizeGift", "Value" + giftSum);
-            databaseReference.child("PersonList").child(name).setValue(currPerson);
+            databaseReference2.setValue(giftSum);
 
         }
-    }
 
     private void deleteGiftsFromListViewDatabase(String name, String gift){
-        database.getReference().child(user.getUid()).child("GiftsList").child(name + " Gifts").child(gift).removeValue();
+        FirebaseDatabase.getInstance().getReference().child(user.getUid()).child("GiftsList").child(name + " Gifts").child(gift).removeValue();
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+
+    }
+
 
     private void openGiftList() {
         Intent intent = new Intent(this, addGiftActivity.class);
