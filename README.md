@@ -39,6 +39,6 @@ App Icon and logo made with https://www.freelogodesign.org
     <img width="329" height="693" hspace="40" src="GiftiveScreenshots/Screenshot_20190805-162929.jpg">
     <img width="329" height="693" hspace="40" src="GiftiveScreenshots/Screenshot_20190805-162942.jpg">
     <img width="329" height="693" hspace="40" src="GiftiveScreenshots/Screenshot_20190805-162950.jpg">
-    <img width="329" height="693" hspace="40" src="GiftiveScreenshots/Screenshot_20190805-162957">
+    <img width="329" height="693" hspace="40" src="GiftiveScreenshots/Screenshot_20190805-162957.jpg">
   </div>
 
