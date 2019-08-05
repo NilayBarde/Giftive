@@ -54,13 +54,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        MobileAds.initialize(this, "ca-app-pub-1058895947598410/1802975649");
-//        MobileAds.initialize(this, "ca-app-pub-3940256099942544/6300978111");
-//        mAdView = findViewById(R.id.adView);
-//        AdRequest adRequest = new AdRequest.Builder()
-//                .addTestDevice("5AF7DA78BC0D4FA32EC0E2C559B83CB8")
-//                .build();
-//        mAdView.loadAd(adRequest);
+        MobileAds.initialize(this, "ca-app-pub-1058895947598410/1802975649");
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544/6300978111");
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("5AF7DA78BC0D4FA32EC0E2C559B83CB8")
+                .build();
+        mAdView.loadAd(adRequest);
 
         mMainFrame = (FrameLayout) findViewById(R.id.mainFrame);
         mMainNav = (BottomNavigationView) findViewById(R.id.mainNav);

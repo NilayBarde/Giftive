@@ -77,6 +77,8 @@ public class FragmentGiftList extends Fragment {
     // boolean to check if all the items for a current user have been bought, checks checkbox if true
     private boolean allBought;
 
+    private boolean first;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -93,17 +95,20 @@ public class FragmentGiftList extends Fragment {
          builder = new AlertDialog.Builder(view.getContext());
          adapter = new PersonBudgetListViewAdapter(getActivity(), R.layout.adapter_view_layout, giftPeople);
          listView.setAdapter(adapter);
-
-         // Progress dialog when data is being retrieved from Firebase
-         progressDialog.setCanceledOnTouchOutside(false);
-         progressDialog.setIndeterminate(true);
-         progressDialog.setMessage("Loading Your Data...");
-         progressDialog.show();
+         first = true;
+             // Progress dialog when data is being retrieved from Firebase
+             progressDialog.setCanceledOnTouchOutside(false);
+             progressDialog.setIndeterminate(true);
+             progressDialog.setMessage("Loading Your Data...");
+             if(first) {
+                progressDialog.show();
+             }
 
         // Update the list from Firebase whenever data under PersonList is changed in Firebase and on start
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                first = false;
                 giftPeople.clear();
                 getData(dataSnapshot);
                 if(giftPeople.size() > 0) {
