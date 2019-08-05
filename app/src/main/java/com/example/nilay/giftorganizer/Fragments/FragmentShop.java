@@ -155,20 +155,22 @@ public class FragmentShop extends Fragment {
 
         for(String name : nameList) {
             DataSnapshot dataSnapshot4 = dataSnapshot2.child(name + " Gifts");
-            ArrayList<Gift> list = new ArrayList<>();
+            if(dataSnapshot4.exists()) {
+                ArrayList<Gift> list = new ArrayList<>();
 //            allBought = true;
-            for(DataSnapshot ds2 : dataSnapshot4.getChildren()) {
-                Gift gift = ds2.getValue(Gift.class);
+                for (DataSnapshot ds2 : dataSnapshot4.getChildren()) {
+                    Gift gift = ds2.getValue(Gift.class);
 //                if(!(gift.isBought())) {
 //                    allBought = false;
 //                }
-                list.add(gift);
-                listHash.put(listDataHeader.get(a), list);
-            }
+                    list.add(gift);
+                    listHash.put(listDataHeader.get(a), list);
+                }
 //            if(!dataSnapshot4.exists()) {
 //                allBought = false;
 //            }
-            a++;
+                a++;
+            }
 //            databaseReference.child("PersonList").child(name).child("allGiftsBought").setValue(allBought);
 
         }

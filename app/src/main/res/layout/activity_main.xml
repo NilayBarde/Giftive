@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/mainNav"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="30dp"
         android:layout_marginEnd="25dp"
         android:src="@drawable/ic_add_black_24dp"
         android:tint="@color/colorWhite"
@@ -54,18 +54,18 @@
             android:layout_marginBottom="0dp" />
     </FrameLayout>
 
-    <com.google.android.gms.ads.AdView
-        xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/adView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="60dp"
-        ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-1058895947598410/1802975649" >
-        <!--ads:adUnitId="ca-app-pub-1058895947598410/1802975649"-->
-    </com.google.android.gms.ads.AdView>
+    <!--<com.google.android.gms.ads.AdView-->
+        <!--xmlns:ads="http://schemas.android.com/apk/res-auto"-->
+        <!--android:id="@+id/adView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_marginBottom="60dp"-->
+        <!--ads:adSize="BANNER"-->
+        <!--ads:adUnitId="ca-app-pub-1058895947598410/1802975649" >-->
+        <!--&lt;!&ndash;ads:adUnitId="ca-app-pub-1058895947598410/1802975649"&ndash;&gt;-->
+    <!--</com.google.android.gms.ads.AdView>-->
 
 </RelativeLayout>
 

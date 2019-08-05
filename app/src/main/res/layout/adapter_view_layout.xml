@@ -18,7 +18,7 @@
         android:id="@+id/textView1"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_weight="60"
+        android:layout_weight="50"
         android:gravity="center"
         android:text="TextView1"
         android:textAlignment="center"
@@ -28,13 +28,12 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="40">
+        android:layout_weight="50">
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_weight="60"
             android:gravity="center"
             android:text="TextView1"
             android:textAlignment="center"

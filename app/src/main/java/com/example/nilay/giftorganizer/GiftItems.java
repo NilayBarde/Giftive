@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nilay.giftorganizer.Objects.Gift;
 import com.example.nilay.giftorganizer.Objects.Person;
@@ -52,19 +53,18 @@ public class GiftItems extends AppCompatActivity {
     private FloatingActionButton floatingActionButton;
     private TextView instructionsGift;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gift_items);
 
-        //        MobileAds.initialize(this, "ca-app-pub-1058895947598410/1802975649");
-        MobileAds.initialize(this, "ca-app-pub-3940256099942544/6300978111");
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice("5AF7DA78BC0D4FA32EC0E2C559B83CB8")
-                .build();
-        mAdView.loadAd(adRequest);
+//        //        MobileAds.initialize(this, "ca-app-pub-1058895947598410/1802975649");
+//        MobileAds.initialize(this, "ca-app-pub-3940256099942544/6300978111");
+//        mAdView = findViewById(R.id.adView);
+//        AdRequest adRequest = new AdRequest.Builder()
+//                .addTestDevice("5AF7DA78BC0D4FA32EC0E2C559B83CB8")
+//                .build();
+//        mAdView.loadAd(adRequest);
 
 
         currPerson = new Person();
@@ -144,9 +144,10 @@ public class GiftItems extends AppCompatActivity {
             builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
                 public void onClick(DialogInterface dialog, int which) {
-                    //Toast.makeText(this, String.format("%s was deleted from your gift list", giftItems.get(info.position).getName()), Toast.LENGTH_LONG).show();
-                    deleteGiftsFromListViewDatabase(name, giftItems.get(info.position).getName());
+                    String giftName = giftItems.get(info.position).getName();
                     giftItems.remove(info.position);
+                    Toast.makeText(getApplicationContext(), giftName + " was deleted from " + name + "'s gift list", Toast.LENGTH_LONG).show();
+                    deleteGiftsFromListViewDatabase(name, giftName);
                     if(giftItems.size() == 0) {
                         instructionsGift.setText("There are no gifts in your list for this person yet!\n\n Add a person using the button below!");
                     }
@@ -195,7 +196,9 @@ public class GiftItems extends AppCompatActivity {
             giftSum = 0;
             if (!(giftItems.isEmpty())) {
                 for (Gift gift : giftItems) {
-                    giftSum = giftSum + gift.getPrice();
+                    if(gift.isBought()) {
+                        giftSum = giftSum + gift.getPrice();
+                    }
                 }
                 instructionsGift.setText("");
             }
@@ -215,7 +218,6 @@ public class GiftItems extends AppCompatActivity {
 
     }
 
-
     private void openGiftList() {
         Intent intent = new Intent(this, addGiftActivity.class);
         Bundle bundle = new Bundle();
@@ -224,5 +226,4 @@ public class GiftItems extends AppCompatActivity {
         startActivity(intent);
 
     }
-
 }

@@ -42,11 +42,6 @@ public class PersonBudgetListViewAdapter extends ArrayAdapter<Person> {
         Double budget = getItem(position).getBudget();
         Double bought = getItem(position).getBought();
 
-        Person person = new Person();
-        person.setName(name);
-        person.setBudget(budget);
-        person.setBought(bought);
-
         if(LayoutInflater.from(mContext) != null) {
             LayoutInflater inflater = LayoutInflater.from(mContext);
             convertView = inflater.inflate(mResource, parent, false);

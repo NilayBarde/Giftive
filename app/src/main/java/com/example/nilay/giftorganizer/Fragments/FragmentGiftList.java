@@ -207,12 +207,13 @@ public class FragmentGiftList extends Fragment {
             builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
                 public void onClick(DialogInterface dialog, int which) {
-                    Toast.makeText(getActivity(), String.format("%s was deleted from your gift list", giftPeople.get(info.position).getName()), Toast.LENGTH_LONG).show();
-                    deleteGiftsFromListViewDatabase(giftPeople.get(info.position).getName());
-                    deletePersonFromListViewDatabase(giftPeople.get(info.position).getName());
-                    deleteEventsFromDatabase(giftPeople.get(info.position).getName());
+                    String name = giftPeople.get(info.position).getName();
                     giftPeople.remove(info.position);
-                    dialog.dismiss();
+                    Toast.makeText(getActivity(), String.format("%s was deleted from your gift list", name), Toast.LENGTH_LONG).show();
+                    deletePersonFromListViewDatabase(name);
+                    deleteGiftsFromListViewDatabase(name);
+                    deleteEventsFromDatabase(name);
+//                    dialog.dismiss();
                     if(giftPeople.size() == 0) {
                         instructions.setText("There are no people in your list yet!\n\n Add a person using the button below!");
                     }
